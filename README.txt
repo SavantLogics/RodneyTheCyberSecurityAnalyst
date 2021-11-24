@@ -4,8 +4,6 @@ html5up.net | Thanks to @ajlkn
 This is Prologue, a simple, single page responsive site template. It features a
 clean, minimalistic design and a sticky sidebar with navigation-linked scrolling.
 
-PS: Not sure how to get that contact form working? Give formspree.io a try (it's awesome).
-
 
 Credits:
 
