@@ -35,6 +35,37 @@
             --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            /* Light mode colors (default) */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #e2e8f0;
+            --text-primary: #334155;
+            --text-secondary: #64748b;
+            --text-inverse: #ffffff;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --navbar-bg: rgba(255, 255, 255, 0.95);
+            --navbar-scrolled: rgba(255, 255, 255, 0.98);
+        }
+
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --accent: #ef4444;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-inverse: #0f172a;
+            --border-color: #334155;
+            --card-bg: #1e293b;
+            --navbar-bg: rgba(15, 23, 42, 0.95);
+            --navbar-scrolled: rgba(15, 23, 42, 0.98);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -50,8 +81,10 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: var(--text);
+            color: var(--text-primary);
             overflow-x: hidden;
+            background-color: var(--bg-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Navigation */
@@ -60,15 +93,15 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--navbar-bg);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--gray-light);
+            border-bottom: 1px solid var(--border-color);
             z-index: 1000;
             transition: all 0.3s ease;
         }
 
         .navbar.scrolled {
-            background: rgba(255, 255, 255, 0.98);
+            background: var(--navbar-scrolled);
             box-shadow: var(--shadow);
         }
 
@@ -97,7 +130,7 @@
 
         .nav-menu a {
             text-decoration: none;
-            color: var(--text);
+            color: var(--text-primary);
             font-weight: 500;
             transition: color 0.3s ease;
             position: relative;
@@ -129,8 +162,123 @@
             background: none;
             border: none;
             font-size: 1.5rem;
-            color: var(--text);
+            color: var(--text-primary);
             cursor: pointer;
+        }
+
+        /* Theme Toggle Switch */
+        .theme-toggle {
+            position: relative;
+            background: var(--border-color);
+            border: none;
+            border-radius: 25px;
+            width: 60px;
+            height: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+            overflow: hidden;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-toggle:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 26px;
+            height: 26px;
+            background: var(--white);
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-slider i {
+            font-size: 0.8rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Dark mode active state */
+        [data-theme="dark"] .theme-toggle {
+            background: var(--primary);
+        }
+
+        [data-theme="dark"] .toggle-slider {
+            transform: translateX(30px);
+            background: var(--white);
+        }
+
+        [data-theme="dark"] .toggle-slider i {
+            color: #fbbf24;
+            transform: rotate(180deg);
+        }
+
+        /* Toggle track background elements */
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 8px;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-bottom: 6px solid var(--text-secondary);
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        [data-theme="dark"] .theme-toggle::before {
+            opacity: 0;
+        }
+
+        [data-theme="dark"] .theme-toggle::after {
+            opacity: 0;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .theme-toggle {
+                width: 50px;
+                height: 26px;
+                margin-left: 0.5rem;
+            }
+
+            .toggle-slider {
+                width: 22px;
+                height: 22px;
+            }
+
+            [data-theme="dark"] .toggle-slider {
+                transform: translateX(24px);
+            }
         }
 
         /* Hero Section */
@@ -262,7 +410,7 @@
         .section-title {
             font-size: 2.5rem;
             font-weight: 700;
-            color: var(--dark);
+            color: var(--text-primary);
             margin-bottom: 1rem;
             position: relative;
         }
@@ -281,7 +429,7 @@
 
         .section-subtitle {
             font-size: 1.1rem;
-            color: var(--text-light);
+            color: var(--text-secondary);
             max-width: 600px;
             margin: 0 auto;
         }
@@ -295,12 +443,12 @@
         }
 
         .project-card {
-            background: var(--white);
+            background: var(--card-bg);
             border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: all 0.3s ease;
-            border: 1px solid var(--gray-light);
+            border: 1px solid var(--border-color);
         }
 
         .project-card:hover {
@@ -325,12 +473,12 @@
         .project-title {
             font-size: 1.3rem;
             font-weight: 600;
-            color: var(--dark);
+            color: var(--text-primary);
             margin-bottom: 1rem;
         }
 
         .project-description {
-            color: var(--text-light);
+            color: var(--text-secondary);
             margin-bottom: 1.5rem;
             line-height: 1.6;
         }
@@ -343,8 +491,8 @@
         }
 
         .tech-tag {
-            background: var(--gray-light);
-            color: var(--text);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
             font-size: 0.8rem;
@@ -372,7 +520,7 @@
 
         /* About Section */
         .about {
-            background: var(--gray-light);
+            background: var(--bg-secondary);
         }
 
         .about-content {
@@ -397,14 +545,14 @@
 
         .about-text h3 {
             font-size: 2rem;
-            color: var(--dark);
+            color: var(--text-primary);
             margin-bottom: 1rem;
         }
 
         .about-text p {
             margin-bottom: 1.5rem;
             line-height: 1.8;
-            color: var(--text);
+            color: var(--text-secondary);
         }
 
         .skills-grid {
@@ -415,12 +563,13 @@
         }
 
         .skill-item {
-            background: var(--white);
+            background: var(--card-bg);
             padding: 1rem;
             border-radius: 10px;
             text-align: center;
             box-shadow: var(--shadow);
             transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
         }
 
         .skill-item:hover {
@@ -515,7 +664,7 @@
                 left: -100%;
                 width: 100%;
                 height: calc(100vh - 70px);
-                background: var(--white);
+                background: var(--card-bg);
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
@@ -566,7 +715,7 @@
             }
         }
 
-        /* Animations */
+        /* Animations - Respect reduced motion preference */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -593,6 +742,20 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Respect reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .animate-on-scroll {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -611,9 +774,16 @@
                 <li><a href="blog.html" class="nav-link">Blog</a></li>
             </ul>
             
-            <button class="mobile-menu-btn" id="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div style="display: flex; align-items: center;">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <div class="toggle-slider">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                </button>
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -1145,37 +1315,103 @@
             }
         }
 
-        // Theme management (for future dark mode implementation)
+        // Theme management with enhanced functionality
         class ThemeManager {
             constructor() {
-                this.currentTheme = localStorage.getItem('theme') || 'light';
+                this.currentTheme = this.getStoredTheme() || this.getPreferredTheme();
+                this.themeToggle = null;
                 this.init();
             }
 
-            init() {
-                document.documentElement.setAttribute('data-theme', this.currentTheme);
-                this.createThemeToggle();
+            getStoredTheme() {
+                return localStorage.getItem('theme');
             }
 
-            createThemeToggle() {
-                // Future implementation for dark/light mode toggle
-                const themeToggle = document.createElement('button');
-                themeToggle.className = 'theme-toggle';
-                themeToggle.setAttribute('aria-label', 'Toggle dark mode');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                
-                themeToggle.addEventListener('click', () => {
-                    this.toggleTheme();
-                });
+            getPreferredTheme() {
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
 
-                // Add to navbar (commented out for now)
-                // document.querySelector('.nav-container').appendChild(themeToggle);
+            init() {
+                this.setTheme(this.currentTheme);
+                this.setupThemeToggle();
+                this.listenForSystemThemeChanges();
+            }
+
+            setTheme(theme) {
+                this.currentTheme = theme;
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                this.updateThemeToggle();
+            }
+
+            setupThemeToggle() {
+                this.themeToggle = document.getElementById('theme-toggle');
+                if (this.themeToggle) {
+                    this.themeToggle.addEventListener('click', () => {
+                        this.toggleTheme();
+                    });
+                    
+                    // Add keyboard support
+                    this.themeToggle.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.toggleTheme();
+                        }
+                    });
+                }
             }
 
             toggleTheme() {
-                this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', this.currentTheme);
-                localStorage.setItem('theme', this.currentTheme);
+                const newTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+                this.setTheme(newTheme);
+                
+                // Add a nice ripple effect
+                this.addRippleEffect();
+            }
+
+            updateThemeToggle() {
+                if (!this.themeToggle) return;
+                
+                const icon = this.themeToggle.querySelector('i');
+                const isDark = this.currentTheme === 'dark';
+                
+                // Update icon
+                icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+                
+                // Update aria-label
+                this.themeToggle.setAttribute('aria-label', 
+                    isDark ? 'Switch to light mode' : 'Switch to dark mode'
+                );
+            }
+
+            addRippleEffect() {
+                if (!this.themeToggle) return;
+                
+                // Create a more subtle scale effect for the toggle switch
+                const slider = this.themeToggle.querySelector('.toggle-slider');
+                const isDark = this.currentTheme === 'dark';
+                
+                if (slider) {
+                    const baseTransform = isDark ? 'translateX(30px)' : 'translateX(0)';
+                    slider.style.transform = `${baseTransform} scale(0.9)`;
+                    setTimeout(() => {
+                        slider.style.transform = `${baseTransform} scale(1)`;
+                    }, 150);
+                } else {
+                    this.themeToggle.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.themeToggle.style.transform = 'scale(1)';
+                    }, 150);
+                }
+            }
+
+            listenForSystemThemeChanges() {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    // Only auto-switch if user hasn't manually set a preference
+                    if (!localStorage.getItem('theme')) {
+                        this.setTheme(e.matches ? 'dark' : 'light');
+                    }
+                });
             }
         }
 
